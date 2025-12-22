@@ -29,7 +29,6 @@ export async function getProducts(filters?: {
 
         query = query.order('createdAt', { ascending: false });
 
-        // Priorité : Pagination explicite > limitCount
         if (filters?.page !== undefined && filters?.limit !== undefined) {
             const from = (filters.page - 1) * filters.limit;
             const to = from + filters.limit - 1;

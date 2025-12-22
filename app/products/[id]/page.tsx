@@ -1,24 +1,26 @@
-import { Suspense } from 'react';
-import ProductDetailClient from '@/components/products/ProductDetailClient';
+'use client';
 
-// Force dynamic rendering to ensure the page is built on demand on the server
-// This fixes 404 errors when new products are added after build time
-export const dynamic = 'force-dynamic';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-// Server Component (Default in Next.js App Router)
-// This receives the `params` prop which is a Promise in Next.js 15+
-export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    // Await the params to get the id
-    const { id } = await params;
+// Cette page sert maintenant uniquement de redirection vers la nouvelle structure d'URL
+// pour assurer la rétrocompatibilité
+export default function ProductRedirectPage() {
+    const params = useParams();
+    const router = useRouter();
+    const id = params?.id as string;
 
-    // Pass the id to the Client Component
+    useEffect(() => {
+        if (id) {
+            router.replace(`/product?id=${id}`);
+        } else {
+            router.replace('/products');
+        }
+    }, [id, router]);
+
     return (
-        <Suspense fallback={
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
-            </div>
-        }>
-            <ProductDetailClient id={id} />
-        </Suspense>
+        <div className="min-h-screen bg-white flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+        </div>
     );
 }
