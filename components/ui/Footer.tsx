@@ -1,6 +1,11 @@
 import Link from 'next/link';
+import { getSettings } from '@/lib/settings';
 
-export default function Footer() {
+export default async function Footer() {
+    const settings = await getSettings();
+    // On s'assure que siteInfo a un type correct, même vide
+    const siteInfo = settings.site_info || { name: '', whatsapp: '', email: '', address: '' };
+
     return (
         <footer className="bg-gray-900 text-gray-300">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
@@ -8,7 +13,13 @@ export default function Footer() {
                     {/* About */}
                     <div>
                         <h3 className="font-serif text-xl font-bold text-white mb-4">
-                            Soumaya <span className="text-amber-500">Prestige</span>
+                            {siteInfo.name ? (
+                                <>
+                                    {siteInfo.name.split(' ')[0]} <span className="text-amber-500">{siteInfo.name.split(' ').slice(1).join(' ')}</span>
+                                </>
+                            ) : (
+                                <>Soumaya <span className="text-amber-500">Prestige</span></>
+                            )}
                         </h3>
                         <p className="text-sm">
                             Votre destination pour les tissus africains authentiques, parfums de luxe et chaussures élégantes.
@@ -63,15 +74,29 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-white mb-4">Contact</h4>
                         <ul className="space-y-2 text-sm">
-                            <li>📞 +221 XX XXX XX XX</li>
-                            <li>📧 contact@soumaya.sn</li>
-                            <li>📍 Dakar, Sénégal</li>
+                            {siteInfo.whatsapp && (
+                                <li>
+                                    <a href={`tel:+${siteInfo.whatsapp}`} className="hover:text-amber-500 transition">
+                                        📞 +{siteInfo.whatsapp}
+                                    </a>
+                                </li>
+                            )}
+                            {siteInfo.email && (
+                                <li>
+                                    <a href={`mailto:${siteInfo.email}`} className="hover:text-amber-500 transition">
+                                        📧 {siteInfo.email}
+                                    </a>
+                                </li>
+                            )}
+                            {siteInfo.address && (
+                                <li>📍 {siteInfo.address}</li>
+                            )}
                         </ul>
                     </div>
                 </div>
 
                 <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-                    <p>&copy; {new Date().getFullYear()} Soumaya Boutique Prestige. Tous droits réservés.</p>
+                    <p>&copy; {new Date().getFullYear()} {siteInfo.name || 'Soumaya Boutique Prestige'}. Tous droits réservés.</p>
                 </div>
             </div>
         </footer>

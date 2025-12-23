@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Cog6ToothIcon, CheckCircleIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { Cog6ToothIcon, CheckCircleIcon, ArrowPathIcon, PhotoIcon } from '@heroicons/react/24/outline';
 import { getSettings, updateSetting } from '@/lib/settings';
+import { uploadImage } from '@/lib/storage';
 import { SiteSettings } from '@/lib/types';
 import Image from 'next/image';
 
@@ -11,6 +12,8 @@ export default function AdminSettingsPage() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+    const [homeHeroFile, setHomeHeroFile] = useState<File | null>(null);
+    const [productsHeroFile, setProductsHeroFile] = useState<File | null>(null);
 
     useEffect(() => {
         fetchSettings();
@@ -29,16 +32,31 @@ export default function AdminSettingsPage() {
         }
     }
 
-    async function handleSave(key: string, value: any) {
+    async function handleSave(key: string, value: any, file?: File | null) {
         setSaving(true);
         setMessage(null);
         try {
-            await updateSetting(key, value);
+            let finalValue = { ...value };
+
+            // Upload image if file exists
+            if (file) {
+                const timestamp = Date.now();
+                const path = `settings/${key}_${timestamp}_${file.name}`;
+                const imageUrl = await uploadImage(file, path);
+                finalValue.imageUrl = imageUrl;
+            }
+
+            await updateSetting(key, finalValue);
+            
             // Update local state
-            setSettings(prev => ({ ...prev, [key]: value }));
+            setSettings(prev => ({ ...prev, [key]: finalValue }));
+            
+            // Clear file input
+            if (key === 'home_hero') setHomeHeroFile(null);
+            if (key === 'products_hero') setProductsHeroFile(null);
+
             setMessage({ type: 'success', text: 'Paramètres mis à jour avec succès.' });
             
-            // Clear message after 3s
             setTimeout(() => setMessage(null), 3000);
         } catch (error) {
             console.error('Error saving setting:', error);
@@ -146,7 +164,7 @@ export default function AdminSettingsPage() {
                     <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
                         <h2 className="font-semibold text-slate-900">Page d'Accueil (Hero Section)</h2>
                         <button
-                            onClick={() => handleSave('home_hero', settings.home_hero)}
+                            onClick={() => handleSave('home_hero', settings.home_hero, homeHeroFile)}
                             disabled={saving}
                             className="text-sm bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 disabled:opacity-50 transition-colors"
                         >
@@ -184,25 +202,42 @@ export default function AdminSettingsPage() {
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-slate-800 mb-1">Image de fond (URL)</label>
-                            <input
-                                type="text"
-                                value={settings.home_hero?.imageUrl || ''}
-                                onChange={(e) => updateNestedState('home_hero', 'imageUrl', e.target.value)}
-                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 mb-4 py-3 px-4"
-                                placeholder="https://..."
-                            />
-                            {settings.home_hero?.imageUrl && (
-                                <div className="relative aspect-video rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Image de fond</label>
+                            
+                            {/* Prévisualisation */}
+                            <div className="mb-4 relative aspect-video rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
+                                {(homeHeroFile ? URL.createObjectURL(homeHeroFile) : settings.home_hero?.imageUrl) ? (
                                     <Image
-                                        src={settings.home_hero.imageUrl}
-                                        alt="Preview"
+                                        src={homeHeroFile ? URL.createObjectURL(homeHeroFile) : settings.home_hero?.imageUrl || ''}
+                                        alt="Hero Preview"
                                         fill
                                         className="object-cover"
                                         unoptimized
                                     />
-                                </div>
-                            )}
+                                ) : (
+                                    <div className="flex items-center justify-center h-full text-slate-400">
+                                        <PhotoIcon className="h-12 w-12" />
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Upload Input */}
+                            <label className="block">
+                                <span className="sr-only">Choisir une image</span>
+                                <input 
+                                    type="file" 
+                                    accept="image/*"
+                                    onChange={(e) => setHomeHeroFile(e.target.files?.[0] || null)}
+                                    className="block w-full text-sm text-slate-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-amber-50 file:text-amber-700
+                                    hover:file:bg-amber-100
+                                    cursor-pointer"
+                                />
+                            </label>
+                            <p className="mt-1 text-xs text-slate-500">PNG, JPG, GIF jusqu'à 5MB</p>
                         </div>
                     </div>
                 </div>
@@ -212,7 +247,7 @@ export default function AdminSettingsPage() {
                     <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
                         <h2 className="font-semibold text-slate-900">Page Produits (Hero Section)</h2>
                         <button
-                            onClick={() => handleSave('products_hero', settings.products_hero)}
+                            onClick={() => handleSave('products_hero', settings.products_hero, productsHeroFile)}
                             disabled={saving}
                             className="text-sm bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 disabled:opacity-50 transition-colors"
                         >
@@ -241,25 +276,42 @@ export default function AdminSettingsPage() {
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-slate-800 mb-1">Image de fond (URL)</label>
-                            <input
-                                type="text"
-                                value={settings.products_hero?.imageUrl || ''}
-                                onChange={(e) => updateNestedState('products_hero', 'imageUrl', e.target.value)}
-                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 mb-4 py-3 px-4"
-                                placeholder="https://..."
-                            />
-                            {settings.products_hero?.imageUrl && (
-                                <div className="relative aspect-video rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Image de fond</label>
+                            
+                            {/* Prévisualisation */}
+                            <div className="mb-4 relative aspect-video rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
+                                {(productsHeroFile ? URL.createObjectURL(productsHeroFile) : settings.products_hero?.imageUrl) ? (
                                     <Image
-                                        src={settings.products_hero.imageUrl}
-                                        alt="Preview"
+                                        src={productsHeroFile ? URL.createObjectURL(productsHeroFile) : settings.products_hero?.imageUrl || ''}
+                                        alt="Products Hero Preview"
                                         fill
                                         className="object-cover"
                                         unoptimized
                                     />
-                                </div>
-                            )}
+                                ) : (
+                                    <div className="flex items-center justify-center h-full text-slate-400">
+                                        <PhotoIcon className="h-12 w-12" />
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Upload Input */}
+                            <label className="block">
+                                <span className="sr-only">Choisir une image</span>
+                                <input 
+                                    type="file" 
+                                    accept="image/*"
+                                    onChange={(e) => setProductsHeroFile(e.target.files?.[0] || null)}
+                                    className="block w-full text-sm text-slate-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-amber-50 file:text-amber-700
+                                    hover:file:bg-amber-100
+                                    cursor-pointer"
+                                />
+                            </label>
+                            <p className="mt-1 text-xs text-slate-500">PNG, JPG, GIF jusqu'à 5MB</p>
                         </div>
                     </div>
                 </div>

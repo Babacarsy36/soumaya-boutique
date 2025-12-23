@@ -19,10 +19,9 @@ function ProductsContent() {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     
-    // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
-    const ITEMS_PER_PAGE = 3; // Reduced for testing pagination
+    const ITEMS_PER_PAGE = 9;
 
     useEffect(() => {
         const category = searchParams.get('category');
@@ -35,7 +34,7 @@ function ProductsContent() {
         async function fetchData() {
             setLoading(true);
             try {
-                // Fetch settings & categories only once ideally, but here we do parallel
+        
                 const [categoriesResult, settingsData] = await Promise.all([
                     getCategories(),
                     getSettings()
@@ -44,7 +43,7 @@ function ProductsContent() {
                 setCategories(categoriesResult.data);
                 setSettings(settingsData);
 
-                // Fetch products with pagination
+    
                 const { data, count } = await getProducts({
                     category: category || undefined,
                     featured: featured === 'true' ? true : undefined,
