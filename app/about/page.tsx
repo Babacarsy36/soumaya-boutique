@@ -32,24 +32,24 @@ export default function AboutPage() {
                         </h2>
                         <div className="space-y-6 text-slate-600 leading-relaxed">
                             <p>
-                                Fondée avec une passion pour les tissus d'exception et le savoir-faire artisanal, 
-                                Soumaya Boutique Prestige est devenue une référence à Dakar pour ceux qui recherchent 
+                                Fondée avec une passion pour les tissus d'exception et le savoir-faire artisanal,
+                                Soumaya Boutique Prestige est devenue une référence à Dakar pour ceux qui recherchent
                                 l'authenticité et le raffinement.
                             </p>
                             <p>
-                                Nous sélectionnons rigoureusement nos matières premières : des bazins les plus éclatants 
+                                Nous sélectionnons rigoureusement nos matières premières : des bazins les plus éclatants
                                 aux soies les plus délicates, en passant par des parfums envoûtants qui signent votre passage.
                             </p>
                             <p>
-                                Notre mission est simple : sublimer votre allure avec des pièces uniques qui racontent une histoire, 
+                                Notre mission est simple : sublimer votre allure avec des pièces uniques qui racontent une histoire,
                                 la vôtre, mêlée à notre héritage culturel.
                             </p>
                         </div>
                     </div>
                     <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-xl">
                         <Image
-                            src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=2070&auto=format&fit=crop"
-                            alt="Tissus et détails"
+                            src="/images/boutique-interior.jpg"
+                            alt="Intérieur de la boutique Soumaya"
                             fill
                             className="object-cover"
                         />
