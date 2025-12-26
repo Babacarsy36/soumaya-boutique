@@ -1,6 +1,13 @@
 import Image from 'next/image';
+import { getSettings } from '@/lib/settings';
 
-export default function AboutPage() {
+export default async function AboutPage() {
+    const settings = await getSettings();
+    const aboutPage = settings.about_page || {
+        title: "Une Histoire de Passion",
+        description: "Chez Soumaya Boutique, nous célébrons la beauté et l'authenticité. Chaque pièce est choisie avec amour pour vous offrir le meilleur de la mode et de l'artisanat."
+    };
+
     return (
         <div className="bg-white">
             {/* Hero Section */}
@@ -19,6 +26,18 @@ export default function AboutPage() {
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-slate-300 max-w-2xl mx-auto">
                         L'élégance et la tradition au service de votre style depuis plus de 10 ans.
+                    </p>
+                </div>
+            </div>
+
+            {/* Story Section - Dynamic Content */}
+            <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16 border-b border-slate-200">
+                <div className="max-w-3xl mx-auto text-center">
+                    <h2 className="text-3xl font-serif font-bold text-slate-900 mb-6">
+                        {aboutPage.title}
+                    </h2>
+                    <p className="text-lg text-slate-600 leading-relaxed">
+                        {aboutPage.description}
                     </p>
                 </div>
             </div>

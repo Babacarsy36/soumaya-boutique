@@ -47,16 +47,16 @@ export default function AdminSettingsPage() {
             }
 
             await updateSetting(key, finalValue);
-            
+
             // Update local state
             setSettings(prev => ({ ...prev, [key]: finalValue }));
-            
+
             // Clear file input
             if (key === 'home_hero') setHomeHeroFile(null);
             if (key === 'products_hero') setProductsHeroFile(null);
 
             setMessage({ type: 'success', text: 'Paramètres mis à jour avec succès.' });
-            
+
             setTimeout(() => setMessage(null), 3000);
         } catch (error) {
             console.error('Error saving setting:', error);
@@ -96,9 +96,8 @@ export default function AdminSettingsPage() {
                     <p className="text-slate-500 mt-1">Gérez les contenus dynamiques de votre boutique.</p>
                 </div>
                 {message && (
-                    <div className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
-                        message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    }`}>
+                    <div className={`px-4 py-2 rounded-lg flex items-center gap-2 ${message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        }`}>
                         {message.type === 'success' && <CheckCircleIcon className="h-5 w-5" />}
                         {message.text}
                     </div>
@@ -203,7 +202,7 @@ export default function AdminSettingsPage() {
                         </div>
                         <div>
                             <label className="block text-sm font-bold text-slate-800 mb-1">Image de fond</label>
-                            
+
                             {/* Prévisualisation */}
                             <div className="mb-4 relative aspect-video rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
                                 {(homeHeroFile ? URL.createObjectURL(homeHeroFile) : settings.home_hero?.imageUrl) ? (
@@ -224,8 +223,8 @@ export default function AdminSettingsPage() {
                             {/* Upload Input */}
                             <label className="block">
                                 <span className="sr-only">Choisir une image</span>
-                                <input 
-                                    type="file" 
+                                <input
+                                    type="file"
                                     accept="image/*"
                                     onChange={(e) => setHomeHeroFile(e.target.files?.[0] || null)}
                                     className="block w-full text-sm text-slate-500
@@ -277,7 +276,7 @@ export default function AdminSettingsPage() {
                         </div>
                         <div>
                             <label className="block text-sm font-bold text-slate-800 mb-1">Image de fond</label>
-                            
+
                             {/* Prévisualisation */}
                             <div className="mb-4 relative aspect-video rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
                                 {(productsHeroFile ? URL.createObjectURL(productsHeroFile) : settings.products_hero?.imageUrl) ? (
@@ -298,8 +297,8 @@ export default function AdminSettingsPage() {
                             {/* Upload Input */}
                             <label className="block">
                                 <span className="sr-only">Choisir une image</span>
-                                <input 
-                                    type="file" 
+                                <input
+                                    type="file"
                                     accept="image/*"
                                     onChange={(e) => setProductsHeroFile(e.target.files?.[0] || null)}
                                     className="block w-full text-sm text-slate-500
@@ -312,6 +311,42 @@ export default function AdminSettingsPage() {
                                 />
                             </label>
                             <p className="mt-1 text-xs text-slate-500">PNG, JPG, GIF jusqu'à 5MB</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 4. Page À Propos */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                        <h2 className="font-semibold text-slate-900">Page À Propos</h2>
+                        <button
+                            onClick={() => handleSave('about_page', settings.about_page)}
+                            disabled={saving}
+                            className="text-sm bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 disabled:opacity-50 transition-colors"
+                        >
+                            {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+                        </button>
+                    </div>
+                    <div className="p-6 space-y-4">
+                        <div>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Titre</label>
+                            <input
+                                type="text"
+                                value={settings.about_page?.title || ''}
+                                onChange={(e) => updateNestedState('about_page', 'title', e.target.value)}
+                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
+                                placeholder="ex: Une Histoire de Passion"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Description</label>
+                            <textarea
+                                value={settings.about_page?.description || ''}
+                                onChange={(e) => updateNestedState('about_page', 'description', e.target.value)}
+                                rows={4}
+                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
+                                placeholder="Description de votre boutique..."
+                            />
                         </div>
                     </div>
                 </div>

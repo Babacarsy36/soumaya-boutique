@@ -87,5 +87,9 @@ export interface SiteSettings {
         subtitle: string;
         imageUrl: string;
     };
+    about_page?: {
+        title: string;
+        description: string;
+    };
     [key: string]: any;
 }
