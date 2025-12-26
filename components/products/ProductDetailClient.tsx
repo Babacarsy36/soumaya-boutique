@@ -19,6 +19,7 @@ export default function ProductDetailClient({ id }: ProductDetailClientProps) {
     const [settings, setSettings] = useState<SiteSettings>({});
     const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState(0);
+    const [selectedWhatsApp, setSelectedWhatsApp] = useState('ligne1');
 
     useEffect(() => {
         async function fetchData() {
@@ -57,8 +58,8 @@ export default function ProductDetailClient({ id }: ProductDetailClientProps) {
                 <ShoppingBagIcon className="h-16 w-16 text-slate-300 mb-4" />
                 <h1 className="text-2xl font-serif text-slate-900 mb-2">Produit non trouvé</h1>
                 <p className="text-slate-500 mb-6">Ce produit ne semble pas exister ou a été retiré.</p>
-                <Link 
-                    href="/products" 
+                <Link
+                    href="/products"
                     className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-amber-600 hover:bg-amber-700 transition"
                 >
                     <ArrowLeftIcon className="h-5 w-5 mr-2" />
@@ -68,8 +69,14 @@ export default function ProductDetailClient({ id }: ProductDetailClientProps) {
         );
     }
 
-    // Get WhatsApp number from settings or fallback
-    const whatsappNumber = settings.site_info?.whatsapp || "221770000000"; 
+
+    // WhatsApp numbers configuration
+    const whatsappNumbers = {
+        ligne1: settings.site_info?.whatsapp || "221770000000",
+        ligne2: "221779163200"
+    };
+
+    const whatsappNumber = whatsappNumbers[selectedWhatsApp as keyof typeof whatsappNumbers];
     const whatsappMessage = `Bonjour, je suis intéressé(e) par le produit : ${product.name} (${formatPrice(product.price)})`;
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
@@ -77,8 +84,8 @@ export default function ProductDetailClient({ id }: ProductDetailClientProps) {
         <div className="min-h-screen bg-white mt-6">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
                 <nav className="mb-8 lg:mb-12">
-                    <Link 
-                        href="/products" 
+                    <Link
+                        href="/products"
                         className="group inline-flex items-center text-sm font-medium text-slate-500 hover:text-amber-600 transition-colors"
                     >
                         <ArrowLeftIcon className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
@@ -105,7 +112,7 @@ export default function ProductDetailClient({ id }: ProductDetailClientProps) {
                                     <ShoppingBagIcon className="h-20 w-20 opacity-20" />
                                 </div>
                             )}
-                            
+
                             {/* Badges Overlay */}
                             <div className="absolute top-4 left-4 flex flex-col gap-2">
                                 {product.featured && (
@@ -128,16 +135,15 @@ export default function ProductDetailClient({ id }: ProductDetailClientProps) {
                                     <button
                                         key={idx}
                                         onClick={() => setSelectedImage(idx)}
-                                        className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                                            selectedImage === idx 
-                                                ? 'border-amber-600 ring-2 ring-amber-600/20' 
-                                                : 'border-transparent hover:border-slate-300'
-                                        }`}
+                                        className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${selectedImage === idx
+                                            ? 'border-amber-600 ring-2 ring-amber-600/20'
+                                            : 'border-transparent hover:border-slate-300'
+                                            }`}
                                     >
-                                        <Image 
-                                            src={img} 
-                                            alt={`${product.name} vue ${idx + 1}`} 
-                                            fill 
+                                        <Image
+                                            src={img}
+                                            alt={`${product.name} vue ${idx + 1}`}
+                                            fill
                                             className="object-cover"
                                             unoptimized
                                         />
@@ -179,17 +185,37 @@ export default function ProductDetailClient({ id }: ProductDetailClientProps) {
                             <p>{product.description}</p>
                         </div>
 
+
                         <div className="mt-auto pt-8 border-t border-slate-100">
                             {product.inStock ? (
-                                <a
-                                    href={whatsappUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex w-full items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-green-600 hover:bg-green-700 md:text-lg transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                                >
-                                    <PhoneIcon className="h-6 w-6 mr-3" />
-                                    Commander sur WhatsApp
-                                </a>
+                                <div className="space-y-4">
+                                    {/* WhatsApp Line Selector */}
+                                    <div>
+                                        <label htmlFor="whatsapp-line" className="block text-sm font-medium text-slate-700 mb-2">
+                                            Choisir une ligne WhatsApp
+                                        </label>
+                                        <select
+                                            id="whatsapp-line"
+                                            value={selectedWhatsApp}
+                                            onChange={(e) => setSelectedWhatsApp(e.target.value)}
+                                            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white text-slate-900"
+                                        >
+                                            <option value="ligne1">SOUMAYA-BOUTIQUE - Ligne 1</option>
+                                            <option value="ligne2">SOUMAYA-BOUTIQUE - Ligne 2</option>
+                                        </select>
+                                    </div>
+
+                                    {/* WhatsApp Button */}
+                                    <a
+                                        href={whatsappUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex w-full items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-green-600 hover:bg-green-700 md:text-lg transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                                    >
+                                        <PhoneIcon className="h-6 w-6 mr-3" />
+                                        Commander sur WhatsApp
+                                    </a>
+                                </div>
                             ) : (
                                 <button
                                     disabled
