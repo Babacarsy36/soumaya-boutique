@@ -368,7 +368,29 @@ export default function AdminSettingsPage() {
                     </div>
                     <div className="p-6 space-y-4">
                         <div>
-                            <label className="block text-sm font-bold text-slate-800 mb-1">Titre</label>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Titre Hero</label>
+                            <input
+                                type="text"
+                                value={settings.about_page?.heroTitle || ''}
+                                onChange={(e) => updateNestedState('about_page', 'heroTitle', e.target.value)}
+                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
+                                placeholder="ex: Notre Histoire"
+                            />
+                            <p className="mt-1 text-xs text-slate-500">Titre principal affiché en haut de la page À propos</p>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Sous-titre Hero</label>
+                            <textarea
+                                value={settings.about_page?.heroSubtitle || ''}
+                                onChange={(e) => updateNestedState('about_page', 'heroSubtitle', e.target.value)}
+                                rows={2}
+                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
+                                placeholder="ex: L'élégance et la tradition au service de votre style depuis plus de 10 ans."
+                            />
+                            <p className="mt-1 text-xs text-slate-500">Sous-titre affiché sous le titre hero</p>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Titre (Section Story)</label>
                             <input
                                 type="text"
                                 value={settings.about_page?.title || ''}
@@ -378,7 +400,7 @@ export default function AdminSettingsPage() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-slate-800 mb-1">Description</label>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Description (Section Story)</label>
                             <textarea
                                 value={settings.about_page?.description || ''}
                                 onChange={(e) => updateNestedState('about_page', 'description', e.target.value)}

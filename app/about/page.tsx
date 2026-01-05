@@ -4,6 +4,8 @@ import { getSettings } from '@/lib/settings';
 export default async function AboutPage() {
     const settings = await getSettings();
     const aboutPage = settings.about_page || {
+        heroTitle: "Notre Histoire",
+        heroSubtitle: "L'élégance et la tradition au service de votre style depuis plus de 10 ans.",
         title: "Une Histoire de Passion",
         description: "Chez Soumaya Boutique, nous célébrons la beauté et l'authenticité. Chaque pièce est choisie avec amour pour vous offrir le meilleur de la mode et de l'artisanat."
     };
@@ -22,10 +24,10 @@ export default async function AboutPage() {
                 </div>
                 <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
                     <h1 className="text-4xl font-serif font-bold tracking-tight text-white sm:text-6xl">
-                        Notre Histoire
+                        {aboutPage.heroTitle}
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-slate-300 max-w-2xl mx-auto">
-                        L'élégance et la tradition au service de votre style depuis plus de 10 ans.
+                        {aboutPage.heroSubtitle}
                     </p>
                 </div>
             </div>

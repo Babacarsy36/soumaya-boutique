@@ -53,6 +53,8 @@ const settingsData = [
     {
         key: 'about_page',
         value: {
+            heroTitle: 'Notre Histoire',
+            heroSubtitle: 'L\'élégance et la tradition au service de votre style depuis plus de 10 ans.',
             title: 'Une Histoire de Passion',
             description: 'Chez Soumaya Boutique, nous célébrons la beauté et l\'authenticité. Chaque pièce est choisie avec amour pour vous offrir le meilleur de la mode et de l\'artisanat.'
         },

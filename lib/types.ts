@@ -91,6 +91,8 @@ export interface SiteSettings {
         imageUrl: string;
     };
     about_page?: {
+        heroTitle: string;
+        heroSubtitle: string;
         title: string;
         description: string;
     };
