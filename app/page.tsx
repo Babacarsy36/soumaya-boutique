@@ -43,6 +43,11 @@ export default function HomePage() {
         imageUrl: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop"
     };
 
+    const collectionBadge = settings.collection_badge || {
+        text: "Nouvelle Collection 2024",
+        visible: true
+    };
+
     return (
         <div className="min-h-screen bg-white">
             {/* Hero Section */}
@@ -60,19 +65,21 @@ export default function HomePage() {
                         />
                     )}
                 </div>
-                
+
                 <div className="relative z-20 text-center px-4 max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                    <span className="inline-block py-1 px-3 border border-white/30 rounded-full text-white/80 text-sm font-medium tracking-widest uppercase mb-6 backdrop-blur-sm">
-                        Nouvelle Collection 2024
-                    </span>
+                    {collectionBadge.visible && (
+                        <span className="inline-block py-1 px-3 border border-white/30 rounded-full text-white/80 text-sm font-medium tracking-widest uppercase mb-6 backdrop-blur-sm">
+                            {collectionBadge.text}
+                        </span>
+                    )}
                     <h1 className="font-serif text-5xl md:text-7xl font-medium text-white mb-8 leading-tight">
-                        {hero.title.includes('Sénégalaise') ? (
+                        {hero.title?.includes('Sénégalaise') ? (
                             <>
                                 {hero.title.replace(' Sénégalaise', '')} <br />
                                 <span className="italic text-amber-500">Sénégalaise</span>
                             </>
                         ) : (
-                            hero.title
+                            hero.title || "L'Art de l'Élégance Sénégalaise"
                         )}
                     </h1>
                     <p className="text-lg md:text-xl text-white/90 mb-10 font-light max-w-2xl mx-auto">
@@ -131,7 +138,7 @@ export default function HomePage() {
                         <h2 className="font-serif text-3xl md:text-4xl text-slate-900 mb-4">Nos Univers</h2>
                         <div className="h-1 w-20 bg-amber-600 mx-auto rounded-full" />
                     </div>
-                    
+
                     {loading ? (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[1, 2, 3].map((i) => (
@@ -183,8 +190,8 @@ export default function HomePage() {
                             <h2 className="font-serif text-3xl md:text-4xl text-slate-900 mb-2">Les Incontournables</h2>
                             <p className="text-slate-500 font-light">Nos pièces les plus convoitées du moment.</p>
                         </div>
-                        <Link 
-                            href="/products" 
+                        <Link
+                            href="/products"
                             className="hidden sm:flex items-center text-amber-700 hover:text-amber-800 font-medium transition-colors"
                         >
                             Tout voir <ArrowRightIcon className="ml-2 h-4 w-4" />
@@ -210,8 +217,8 @@ export default function HomePage() {
                     )}
 
                     <div className="mt-12 text-center sm:hidden">
-                        <Link 
-                            href="/products" 
+                        <Link
+                            href="/products"
                             className="inline-flex items-center px-6 py-3 border border-slate-300 rounded-full text-slate-700 font-medium hover:bg-slate-50 transition-colors"
                         >
                             Voir toute la collection
@@ -225,7 +232,7 @@ export default function HomePage() {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="relative bg-slate-900 rounded-3xl overflow-hidden">
                         <div className="absolute inset-0">
-                             {/* Placeholder for About Image */}
+                            {/* Placeholder for About Image */}
                             <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-40" />
                         </div>
                         <div className="relative px-6 py-24 sm:px-12 sm:py-32 lg:px-16 text-center max-w-3xl mx-auto">

@@ -1,10 +1,19 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getSettings } from '@/lib/settings';
 
-export default async function Footer() {
-    const settings = await getSettings();
-    // On s'assure que siteInfo a un type correct, même vide
-    const siteInfo = settings.site_info || { name: '', whatsapp: '', email: '', address: '' };
+export default function Footer() {
+    const [siteInfo, setSiteInfo] = useState({ name: '', whatsapp: '', email: '', address: '' });
+
+    useEffect(() => {
+        async function loadSettings() {
+            const settings = await getSettings();
+            setSiteInfo(settings.site_info || { name: '', whatsapp: '', email: '', address: '' });
+        }
+        loadSettings();
+    }, []);
 
     return (
         <footer className="bg-gray-900 text-gray-300">
