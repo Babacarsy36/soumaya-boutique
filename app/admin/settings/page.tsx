@@ -66,8 +66,9 @@ export default function AdminSettingsPage() {
         }
     }
 
+
     // Helper to update nested state
-    const updateNestedState = (section: string, field: string, value: string) => {
+    const updateNestedState = (section: string, field: string, value: string | boolean) => {
         setSettings(prev => ({
             ...prev,
             [section]: {
@@ -128,13 +129,51 @@ export default function AdminSettingsPage() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-slate-800 mb-1">WhatsApp (Format international sans +)</label>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">WhatsApp Ligne 1 (Format international sans +)</label>
                             <input
                                 type="text"
-                                value={settings.site_info?.whatsapp || ''}
-                                onChange={(e) => updateNestedState('site_info', 'whatsapp', e.target.value)}
+                                value={settings.site_info?.whatsapp?.ligne1 || ''}
+                                onChange={(e) => {
+                                    setSettings(prev => ({
+                                        ...prev,
+                                        site_info: {
+                                            ...prev.site_info,
+                                            name: prev.site_info?.name || '',
+                                            email: prev.site_info?.email || '',
+                                            address: prev.site_info?.address || '',
+                                            whatsapp: {
+                                                ligne1: e.target.value,
+                                                ligne2: prev.site_info?.whatsapp?.ligne2 || ''
+                                            }
+                                        }
+                                    }));
+                                }}
                                 className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
-                                placeholder="ex: 221770000000"
+                                placeholder="ex: 221771494747"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">WhatsApp Ligne 2 (Format international sans +)</label>
+                            <input
+                                type="text"
+                                value={settings.site_info?.whatsapp?.ligne2 || ''}
+                                onChange={(e) => {
+                                    setSettings(prev => ({
+                                        ...prev,
+                                        site_info: {
+                                            ...prev.site_info,
+                                            name: prev.site_info?.name || '',
+                                            email: prev.site_info?.email || '',
+                                            address: prev.site_info?.address || '',
+                                            whatsapp: {
+                                                ligne1: prev.site_info?.whatsapp?.ligne1 || '',
+                                                ligne2: e.target.value
+                                            }
+                                        }
+                                    }));
+                                }}
+                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
+                                placeholder="ex: 221779163200"
                             />
                         </div>
                         <div>
@@ -347,6 +386,45 @@ export default function AdminSettingsPage() {
                                 className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
                                 placeholder="Description de votre boutique..."
                             />
+                        </div>
+                    </div>
+                </div>
+
+                {/* 5. Badge Collection */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                        <h2 className="font-semibold text-slate-900">Badge Collection (Page d'Accueil)</h2>
+                        <button
+                            onClick={() => handleSave('collection_badge', settings.collection_badge)}
+                            disabled={saving}
+                            className="text-sm bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 disabled:opacity-50 transition-colors"
+                        >
+                            {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+                        </button>
+                    </div>
+                    <div className="p-6 space-y-4">
+                        <div>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Texte du Badge</label>
+                            <input
+                                type="text"
+                                value={settings.collection_badge?.text || ''}
+                                onChange={(e) => updateNestedState('collection_badge', 'text', e.target.value)}
+                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
+                                placeholder="ex: Nouvelle Collection 2024"
+                            />
+                            <p className="mt-1 text-xs text-slate-500">Ce texte apparaît au-dessus du titre principal sur la page d'accueil</p>
+                        </div>
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox"
+                                id="badge-visible"
+                                checked={settings.collection_badge?.visible ?? true}
+                                onChange={(e) => updateNestedState('collection_badge', 'visible', e.target.checked)}
+                                className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-slate-300 rounded"
+                            />
+                            <label htmlFor="badge-visible" className="ml-2 block text-sm text-slate-700">
+                                Afficher le badge sur la page d'accueil
+                            </label>
                         </div>
                     </div>
                 </div>

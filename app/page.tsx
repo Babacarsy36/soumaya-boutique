@@ -53,7 +53,7 @@ export default function HomePage() {
             {/* Hero Section */}
             <section className="relative h-[80vh] bg-slate-900 flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-black/40 z-10" />
+                    <div className="absolute inset-0 bg-black/20 z-10" />
                     {hero.imageUrl && (
                         <Image
                             src={hero.imageUrl}

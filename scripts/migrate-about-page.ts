@@ -1,7 +1,27 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
+// Load environment variables first
+import { config } from 'dotenv';
+import { resolve } from 'path';
 
-import { supabase } from '../lib/supabase';
+// Load .env.local from the project root
+config({ path: resolve(__dirname, '../.env.local') });
+
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+// Try to use service role key for migrations, fall back to anon key
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+if (!supabaseUrl || !supabaseKey) {
+    console.error('Missing environment variables:');
+    console.error('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? 'Set' : 'Missing');
+    console.error('SUPABASE_SERVICE_ROLE_KEY:', process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Set' : 'Missing');
+    console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Missing');
+    throw new Error('Missing Supabase environment variables');
+}
+
+console.log('Using', process.env.SUPABASE_SERVICE_ROLE_KEY ? 'service role key' : 'anon key', 'for migration');
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function runMigration() {
     console.log('🚀 Running about_page migration...');

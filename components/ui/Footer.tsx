@@ -5,12 +5,22 @@ import Link from 'next/link';
 import { getSettings } from '@/lib/settings';
 
 export default function Footer() {
-    const [siteInfo, setSiteInfo] = useState({ name: '', whatsapp: '', email: '', address: '' });
+    const [siteInfo, setSiteInfo] = useState({
+        name: '',
+        whatsapp: { ligne1: '', ligne2: '' },
+        email: '',
+        address: ''
+    });
 
     useEffect(() => {
         async function loadSettings() {
             const settings = await getSettings();
-            setSiteInfo(settings.site_info || { name: '', whatsapp: '', email: '', address: '' });
+            setSiteInfo(settings.site_info || {
+                name: '',
+                whatsapp: { ligne1: '', ligne2: '' },
+                email: '',
+                address: ''
+            });
         }
         loadSettings();
     }, []);
@@ -83,10 +93,10 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-white mb-4">Contact</h4>
                         <ul className="space-y-2 text-sm">
-                            {siteInfo.whatsapp && (
+                            {siteInfo.whatsapp?.ligne1 && (
                                 <li>
-                                    <a href={`tel:+${siteInfo.whatsapp}`} className="hover:text-amber-500 transition">
-                                        📞 +{siteInfo.whatsapp}
+                                    <a href={`tel:+${siteInfo.whatsapp.ligne1}`} className="hover:text-amber-500 transition">
+                                        📞 +{siteInfo.whatsapp.ligne1}
                                     </a>
                                 </li>
                             )}

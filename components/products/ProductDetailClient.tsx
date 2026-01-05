@@ -72,8 +72,8 @@ export default function ProductDetailClient({ id }: ProductDetailClientProps) {
 
     // WhatsApp numbers configuration
     const whatsappNumbers = {
-        ligne1: settings.site_info?.whatsapp || "221770000000",
-        ligne2: "221779163200"
+        ligne1: settings.site_info?.whatsapp?.ligne1 || "221771494747",
+        ligne2: settings.site_info?.whatsapp?.ligne2 || "221779163200"
     };
 
     const whatsappNumber = whatsappNumbers[selectedWhatsApp as keyof typeof whatsappNumbers];

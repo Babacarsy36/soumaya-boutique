@@ -72,7 +72,10 @@ export interface Setting {
 export interface SiteSettings {
     site_info?: {
         name: string;
-        whatsapp: string;
+        whatsapp: {
+            ligne1: string;
+            ligne2: string;
+        };
         email: string;
         address: string;
     };
@@ -90,6 +93,10 @@ export interface SiteSettings {
     about_page?: {
         title: string;
         description: string;
+    };
+    collection_badge?: {
+        text: string;
+        visible: boolean;
     };
     [key: string]: any;
 }
