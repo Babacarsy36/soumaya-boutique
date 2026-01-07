@@ -450,6 +450,44 @@ export default function AdminSettingsPage() {
                         </div>
                     </div>
                 </div>
+
+                {/* 6. Section Catégories */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                        <h2 className="font-semibold text-slate-900">Section Catégories (Page d'Accueil)</h2>
+                        <button
+                            onClick={() => handleSave('categories_section', settings.categories_section)}
+                            disabled={saving}
+                            className="text-sm bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 disabled:opacity-50 transition-colors"
+                        >
+                            {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+                        </button>
+                    </div>
+                    <div className="p-6 space-y-4">
+                        <div>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Titre</label>
+                            <input
+                                type="text"
+                                value={settings.categories_section?.title || ''}
+                                onChange={(e) => updateNestedState('categories_section', 'title', e.target.value)}
+                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
+                                placeholder="ex: Nos Univers"
+                            />
+                            <p className="mt-1 text-xs text-slate-500">Titre de la section catégories sur la page d'accueil</p>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold text-slate-800 mb-1">Sous-titre (optionnel)</label>
+                            <input
+                                type="text"
+                                value={settings.categories_section?.subtitle || ''}
+                                onChange={(e) => updateNestedState('categories_section', 'subtitle', e.target.value)}
+                                className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-amber-500 focus:ring-amber-500 py-3 px-4"
+                                placeholder="ex: Découvrez nos collections"
+                            />
+                            <p className="mt-1 text-xs text-slate-500">Description affichée sous le titre (optionnel)</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

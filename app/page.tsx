@@ -48,6 +48,11 @@ export default function HomePage() {
         visible: true
     };
 
+    const categoriesSection = settings.categories_section || {
+        title: "Nos Univers",
+        subtitle: ""
+    };
+
     return (
         <div className="min-h-screen bg-white">
             {/* Hero Section */}
@@ -135,8 +140,11 @@ export default function HomePage() {
             <section className="py-20 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="font-serif text-3xl md:text-4xl text-slate-900 mb-4">Nos Univers</h2>
-                        <div className="h-1 w-20 bg-amber-600 mx-auto rounded-full" />
+                        <h2 className="font-serif text-3xl md:text-4xl text-slate-900 mb-4">{categoriesSection.title}</h2>
+                        {categoriesSection.subtitle && (
+                            <p className="text-lg text-slate-600 mt-4">{categoriesSection.subtitle}</p>
+                        )}
+                        <div className="h-1 w-20 bg-amber-600 mx-auto rounded-full mt-4" />
                     </div>
 
                     {loading ? (

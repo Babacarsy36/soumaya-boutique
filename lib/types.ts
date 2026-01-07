@@ -100,5 +100,9 @@ export interface SiteSettings {
         text: string;
         visible: boolean;
     };
+    categories_section?: {
+        title: string;
+        subtitle?: string;
+    };
     [key: string]: any;
 }
