@@ -137,8 +137,18 @@ export default function HomePage() {
             </section>
 
             {/* Categories Grid */}
-            <section className="py-20 bg-white">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <section
+                className="py-20 bg-white relative"
+                style={categoriesSection.backgroundImage ? {
+                    backgroundImage: `url(${categoriesSection.backgroundImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                } : {}}
+            >
+                {categoriesSection.backgroundImage && (
+                    <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
+                )}
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-16">
                         <h2 className="font-serif text-3xl md:text-4xl text-slate-900 mb-4">{categoriesSection.title}</h2>
                         {categoriesSection.subtitle && (

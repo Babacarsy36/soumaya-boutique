@@ -103,6 +103,7 @@ export interface SiteSettings {
     categories_section?: {
         title: string;
         subtitle?: string;
+        backgroundImage?: string;
     };
     [key: string]: any;
 }

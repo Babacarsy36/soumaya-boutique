@@ -14,6 +14,7 @@ export default function AdminSettingsPage() {
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const [homeHeroFile, setHomeHeroFile] = useState<File | null>(null);
     const [productsHeroFile, setProductsHeroFile] = useState<File | null>(null);
+    const [categoriesBgFile, setCategoriesBgFile] = useState<File | null>(null);
 
     useEffect(() => {
         fetchSettings();
@@ -456,7 +457,7 @@ export default function AdminSettingsPage() {
                     <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
                         <h2 className="font-semibold text-slate-900">Section Catégories (Page d'Accueil)</h2>
                         <button
-                            onClick={() => handleSave('categories_section', settings.categories_section)}
+                            onClick={() => handleSave('categories_section', settings.categories_section, categoriesBgFile)}
                             disabled={saving}
                             className="text-sm bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 disabled:opacity-50 transition-colors"
                         >
@@ -485,6 +486,46 @@ export default function AdminSettingsPage() {
                                 placeholder="ex: Découvrez nos collections"
                             />
                             <p className="mt-1 text-xs text-slate-500">Description affichée sous le titre (optionnel)</p>
+                        </div>
+
+                        {/* Image de fond */}
+                        <div>
+                            <label className="block text-sm font-bold text-slate-800 mb-2">Image de Fond (optionnel)</label>
+
+                            {/* Prévisualisation */}
+                            <div className="mb-4 relative aspect-video rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
+                                {(categoriesBgFile ? URL.createObjectURL(categoriesBgFile) : settings.categories_section?.backgroundImage) ? (
+                                    <Image
+                                        src={categoriesBgFile ? URL.createObjectURL(categoriesBgFile) : settings.categories_section?.backgroundImage || ''}
+                                        alt="Categories Background Preview"
+                                        fill
+                                        className="object-cover"
+                                        unoptimized
+                                    />
+                                ) : (
+                                    <div className="flex items-center justify-center h-full text-slate-400">
+                                        <PhotoIcon className="h-12 w-12" />
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Upload Input */}
+                            <label className="block">
+                                <span className="sr-only">Choisir une image</span>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setCategoriesBgFile(e.target.files?.[0] || null)}
+                                    className="block w-full text-sm text-slate-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-amber-50 file:text-amber-700
+                                    hover:file:bg-amber-100
+                                    cursor-pointer"
+                                />
+                            </label>
+                            <p className="mt-1 text-xs text-slate-500">PNG, JPG, GIF jusqu'à 5MB. Image de fond pour la section catégories.</p>
                         </div>
                     </div>
                 </div>
