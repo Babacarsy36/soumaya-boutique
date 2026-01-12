@@ -41,7 +41,7 @@ export default function Footer() {
                             )}
                         </h3>
                         <p className="text-sm">
-                            Votre destination pour les tissus africains authentiques, parfums de luxe et chaussures élégantes.
+                            Votre destination pour les tissus africains authentiques, parfums de luxe et accessoires élégants.
                         </p>
                     </div>
 
@@ -82,8 +82,8 @@ export default function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/products?category=chaussures" className="hover:text-amber-500 transition">
-                                    Chaussures
+                                <Link href="/products?category=accessoires" className="hover:text-amber-500 transition">
+                                    Accessoires
                                 </Link>
                             </li>
                         </ul>
