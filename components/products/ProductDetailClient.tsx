@@ -77,7 +77,20 @@ export default function ProductDetailClient({ id }: ProductDetailClientProps) {
     };
 
     const whatsappNumber = whatsappNumbers[selectedWhatsApp as keyof typeof whatsappNumbers];
-    const whatsappMessage = `Bonjour, je suis intéressé(e) par le produit : ${product.name} (${formatPrice(product.price)})`;
+
+    // Create WhatsApp message with product details and image
+    const productUrl = typeof window !== 'undefined' ? window.location.href : '';
+    const productImage = product.images && product.images.length > 0 ? product.images[0] : '';
+
+    const whatsappMessage = `Bonjour, je suis intéressé(e) par ce produit :
+
+📦 *${product.name}*
+💰 Prix : ${formatPrice(product.price)}
+${productImage ? `\n📸 *VOIR LA PHOTO* :\n${productImage}\n` : ''}
+🔗 Lien du produit :\n${productUrl}
+
+Merci !`;
+
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
     return (
