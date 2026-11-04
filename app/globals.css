@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ivory: #f8f3eb;
+  --color-sand: #efe5d6;
+  --color-ink: #1b1511;
+  --color-muted: #6f6258;
+  --color-ochre: #b06a24;
+  --color-earth: #6e3519;
+  --color-gold: #c9a35b;
+  --color-line: #e2d6c4;
+
+  --font-display: var(--font-cormorant), "Times New Roman", serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ivory text-ink font-sans antialiased;
+  }
+  ::selection {
+    @apply bg-gold/40;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ochre;
+  }
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10;
+}
+
+@utility eyebrow {
+  @apply text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-ochre;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold tracking-wide transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+@utility btn-dark {
+  @apply btn bg-ink text-ivory hover:bg-earth;
+}
+
+@utility btn-light {
+  @apply btn bg-ivory text-ink hover:bg-sand;
+}
+
+@utility btn-outline {
+  @apply btn border border-ink/20 text-ink hover:border-ink;
+}
+
+@utility btn-whatsapp {
+  @apply btn bg-[#1f7a4d] text-white hover:bg-[#17603c];
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
