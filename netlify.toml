@@ -7,15 +7,10 @@
   NODE_VERSION = "22"
   NEXT_TELEMETRY_DISABLED = "1"
 
-# www.soumayaboutique.com et l'ancienne adresse netlify.app renvoient vers le domaine principal.
+# www.soumayaboutique.com renvoie vers le domaine principal. Pas de redirection depuis
+# soumayaboutique.netlify.app tant que le certificat HTTPS du domaine n'est pas actif.
 [[redirects]]
   from = "https://www.soumayaboutique.com/*"
-  to = "https://soumayaboutique.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://soumayaboutique.netlify.app/*"
   to = "https://soumayaboutique.com/:splat"
   status = 301
   force = true
