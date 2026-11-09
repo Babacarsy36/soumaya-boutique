@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -23,8 +24,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${cormorant.variable} ${manrope.variable}`}>
-      <body>{children}</body>
+    // suppressHydrationWarning : la classe « reveal » est ajoutée avant l'hydratation (voir Reveal.tsx).
+    <html lang="fr" className={`${cormorant.variable} ${manrope.variable}`} suppressHydrationWarning>
+      <body>
+        {/* Pose la classe avant le premier affichage, pour éviter que le contenu clignote. */}
+        <Script id="reveal" strategy="beforeInteractive">
+          {`if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("reveal")`}
+        </Script>
+        {children}
+      </body>
     </html>
   );
 }

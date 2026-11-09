@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { WaxBand } from "@/components/patterns";
 import { getCategories } from "@/lib/catalogue";
 import { SHOP_NAME, getSettings, whatsappLink } from "@/lib/site";
 
@@ -6,6 +7,7 @@ export default async function Footer() {
   const [categories, settings] = await Promise.all([getCategories(), getSettings()]);
   return (
     <footer className="mt-24 bg-ink text-ivory/80">
+      <WaxBand id="footer-band" className="h-4" />
       <div className="container-page grid gap-12 py-16 md:grid-cols-4">
         <div className="md:col-span-2">
           <p className="font-display text-4xl text-ivory">Soumaya</p>

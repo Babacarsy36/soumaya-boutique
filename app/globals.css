@@ -69,3 +69,101 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Ouverture « Entrez dans le wax » (components/WaxDive.tsx) : la longueur de la section
+   donne la durée du défilement. État de départ ici pour éviter un saut au chargement. */
+.wax-dive {
+  height: 480vh;
+}
+.wax-dive-swatch {
+  clip-path: inset(30% 16% round 14px);
+  transform: perspective(1200px) rotateX(24deg) translateY(4%);
+}
+@media (min-width: 640px) {
+  .wax-dive-swatch {
+    clip-path: inset(28% 34% round 14px);
+  }
+}
+/* Trame du tissu */
+.wax-dive-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Cpath d='M0 0h3v3H0zM3 3h3v3H3z' fill='%23fff'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wax-dive {
+    height: auto;
+  }
+  .wax-dive-stage {
+    position: relative;
+    top: 0;
+  }
+  .wax-dive-photo,
+  .wax-dive-beat,
+  .wax-dive-hint {
+    display: none;
+  }
+  .wax-dive-swatch {
+    clip-path: none;
+    transform: none;
+  }
+  .wax-dive-outro {
+    opacity: 1 !important;
+  }
+  .wax-dive-veil {
+    opacity: 0.55;
+  }
+}
+
+/* Apparition au défilement (components/Reveal.tsx). La classe .reveal n'est posée que si
+   JavaScript tourne et que les animations sont permises : sinon tout reste visible. */
+.reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.reveal [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Bandeau défilant (components/Marquee.tsx) */
+.marquee {
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Lent mouvement du motif ou de la photo d'en-tête (components/PageHero.tsx) */
+.hero-drift {
+  animation: hero-drift 24s ease-in-out infinite alternate;
+}
+@keyframes hero-drift {
+  to {
+    transform: scale(1.08) translateX(-2%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee,
+  .hero-drift {
+    animation: none;
+  }
+}
+
+.spin-slow {
+  animation: spin 30s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .spin-slow {
+    animation: none;
+  }
+}

@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import Marquee from "@/components/Marquee";
 import ProductCard from "@/components/ProductCard";
+import WaxDive from "@/components/WaxDive";
+import { WaxPattern } from "@/components/patterns";
 import { getCategories, getProduct, getProducts } from "@/lib/catalogue";
 import { SHOP_NAME, getSettings, whatsappLink } from "@/lib/site";
 
@@ -22,17 +25,21 @@ export default async function Home() {
   const spotlight = (settings.spotlight && (await getProduct(settings.spotlight))) || featured[0];
   const heroImage = settings.heroImage ?? spotlight?.images[0] ?? categories[0]?.image;
   const storyImage = categories.at(-1)?.image;
+  const fabricImage = categories.find((c) => c.slug === "tissus")?.image ?? heroImage;
   const ask = (message: string) => whatsappLink(settings.whatsapp, `Bonjour ${SHOP_NAME}, ${message}`);
 
   return (
     <>
+      <WaxDive photo={fabricImage} />
+      <Marquee />
+
       {/* Ouverture */}
-      <section className="container-page grid gap-10 pb-16 pt-6 md:grid-cols-12 md:items-center md:pt-12 lg:pb-24">
+      <section className="container-page grid gap-10 pb-16 pt-16 md:grid-cols-12 md:items-center md:pt-24 lg:pb-24">
         <div className="md:col-span-5">
           <p className="eyebrow">Nouvelle collection · {new Date().getFullYear()}</p>
-          <h1 className="mt-5 font-display text-5xl leading-[1.02] sm:text-6xl lg:text-7xl">
+          <h2 className="mt-5 font-display text-5xl leading-[1.02] sm:text-6xl lg:text-7xl">
             L’élégance <em className="text-earth">sénégalaise</em>, choisie pour vous.
-          </h1>
+          </h2>
           <p className="mt-6 max-w-md text-base leading-relaxed text-muted">{settings.heroText}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/boutique" className="btn-dark">
@@ -83,7 +90,7 @@ export default async function Home() {
 
       {/* Univers */}
       <section className="container-page py-20 lg:py-28">
-        <div className="flex items-end justify-between gap-6">
+        <div data-reveal className="flex items-end justify-between gap-6">
           <div>
             <p className="eyebrow">Nos univers</p>
             <h2 className="mt-3 font-display text-4xl sm:text-5xl">Tout pour vos grandes occasions</h2>
@@ -97,6 +104,8 @@ export default async function Home() {
             <Link
               key={c.slug}
               href={`/boutique?categorie=${c.slug}`}
+              data-reveal
+              style={{ "--i": i } as React.CSSProperties}
               className={`group relative overflow-hidden rounded-sm bg-sand ${i === 0 ? "col-span-2 aspect-[16/10] lg:col-span-1 lg:aspect-[3/4]" : "aspect-[3/4]"}`}
             >
               {c.image && (
@@ -121,11 +130,11 @@ export default async function Home() {
       {/* Incontournables */}
       <section className="bg-sand/60 py-20 lg:py-28">
         <div className="container-page">
-          <p className="eyebrow">Les incontournables</p>
+          <p data-reveal className="eyebrow">Les incontournables</p>
           <h2 className="mt-3 font-display text-4xl sm:text-5xl">Les pièces qu’on nous demande le plus</h2>
           <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
-            {featured.map((p) => (
-              <ProductCard key={p.slug} product={p} />
+            {featured.map((p, i) => (
+              <ProductCard key={p.slug} product={p} index={i} />
             ))}
           </div>
           <div className="mt-12 text-center">
@@ -138,12 +147,12 @@ export default async function Home() {
 
       {/* Histoire */}
       <section className="container-page grid gap-10 py-20 md:grid-cols-2 md:items-center lg:py-28">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-sand">
+        <div data-reveal className="relative aspect-[4/5] overflow-hidden rounded-sm bg-sand">
           {storyImage && (
             <Image src={storyImage} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
           )}
         </div>
-        <div className="md:pl-8">
+        <div data-reveal style={{ "--i": 1 } as React.CSSProperties} className="md:pl-8">
           <p className="eyebrow">Notre histoire</p>
           <h2 className="mt-3 font-display text-4xl leading-tight sm:text-5xl">
             Une boutique de quartier devenue une adresse de confiance.
@@ -169,8 +178,8 @@ export default async function Home() {
             </div>
           </div>
           <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-3">
-            {newest.map((p) => (
-              <ProductCard key={p.slug} product={p} />
+            {newest.map((p, i) => (
+              <ProductCard key={p.slug} product={p} index={i} />
             ))}
           </div>
         </section>
@@ -178,16 +187,19 @@ export default async function Home() {
 
       {/* Appel WhatsApp */}
       <section className="container-page pt-20">
-        <div className="rounded-sm bg-earth px-6 py-14 text-center text-ivory sm:px-12">
-          <p className="eyebrow text-gold">Besoin d’un conseil ?</p>
-          <h2 className="mx-auto mt-4 max-w-2xl font-display text-4xl leading-tight sm:text-5xl">
+        <div data-reveal className="relative overflow-hidden rounded-sm bg-earth px-6 py-14 text-center text-ivory sm:px-12">
+          <div className="absolute inset-0 opacity-15 [mask-image:radial-gradient(circle,transparent_35%,#000_75%)]">
+            <WaxPattern id="cta-wax" scale={0.5} />
+          </div>
+          <p className="eyebrow relative text-gold">Besoin d’un conseil ?</p>
+          <h2 className="relative mx-auto mt-4 max-w-2xl font-display text-4xl leading-tight sm:text-5xl">
             Envoyez-nous une photo de votre tenue, on vous aide à choisir.
           </h2>
           <a
             href={ask("j'aimerais un conseil pour une tenue.")}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-light mt-8"
+            className="btn-light relative mt-8"
           >
             Discuter sur WhatsApp
           </a>

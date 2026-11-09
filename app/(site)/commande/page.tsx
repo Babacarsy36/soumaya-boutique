@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Stepper } from "@/components/AddToOrder";
+import { WaxBand, WaxPattern } from "@/components/patterns";
 import { orderMessage, sendOrder, useOrder } from "@/lib/order";
 import { formatPrice } from "@/lib/format";
 
@@ -16,7 +17,8 @@ export default function Commande() {
   if (sentRef) {
     return (
       <div className="container-page py-24 text-center">
-        <p className="eyebrow">Commande envoyée</p>
+        <Medallion id="sent-wax" />
+        <p className="eyebrow mt-8">Commande envoyée</p>
         <h1 className="mt-3 font-display text-5xl">Merci !</h1>
         <p className="mx-auto mt-4 max-w-md text-muted">
           Votre commande <strong className="text-ink">{sentRef}</strong> a été transmise. Terminez l’envoi dans
@@ -44,7 +46,8 @@ export default function Commande() {
   if (lines.length === 0) {
     return (
       <div className="container-page py-24 text-center">
-        <p className="eyebrow">Ma commande</p>
+        <Medallion id="empty-wax" />
+        <p className="eyebrow mt-8">Ma commande</p>
         <h1 className="mt-3 font-display text-5xl">Votre liste est vide</h1>
         <p className="mx-auto mt-4 max-w-md text-muted">
           Ajoutez des articles depuis la boutique, puis envoyez votre commande sur WhatsApp en un clic.
@@ -66,6 +69,7 @@ export default function Commande() {
     <div className="container-page pt-10 md:pt-16">
       <p className="eyebrow">Ma commande</p>
       <h1 className="mt-3 font-display text-5xl">Votre sélection</h1>
+      <WaxBand id="order-band" className="mt-6 h-3 w-32 rounded-full" />
 
       <div className="mt-10 grid gap-12 lg:grid-cols-12">
         <ul className="divide-y divide-line border-y border-line lg:col-span-7">
@@ -155,6 +159,15 @@ export default function Commande() {
           </p>
         </aside>
       </div>
+    </div>
+  );
+}
+
+// Rond de wax qui tourne lentement, pour les écrans vide et merci.
+function Medallion({ id }: { id: string }) {
+  return (
+    <div className="spin-slow relative mx-auto h-28 w-28 overflow-hidden rounded-full shadow-[0_20px_40px_-20px_rgb(27_21_17/0.5)]">
+      <WaxPattern id={id} scale={0.45} />
     </div>
   );
 }
